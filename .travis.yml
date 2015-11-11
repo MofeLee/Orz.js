@@ -21,23 +21,16 @@ matrix:
 
 sudo: false
 
-before_install:
-  # Setup Node.js version-specific dependencies
-  - "test $TRAVIS_NODE_VERSION != '0.6' || npm rm --save-dev istanbul"
-  - "test $TRAVIS_NODE_VERSION != '0.8' || npm rm --save-dev istanbul"
-  - "test $TRAVIS_NODE_VERSION  = '4.2' || npm rm --save-dev eslint"
 
 before_script:
 - "mysql -e 'create database orz_test; select version();'"
 
 script:
   # Run test script, depending on istanbul install
-  - "test ! -z $(npm -ps ls istanbul) || npm test"
-  - "test   -z $(npm -ps ls istanbul) || npm run-script test-ci"
-  - "test   -z $(npm -ps ls eslint) || npm run-script lint"
+  - "npm test"
 
 after_script:
-  - "test -e ./coverage/lcov.info && npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
+  # - "test -e ./coverage/lcov.info && npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
 
 env:
   - MYSQL_TYPE=mysql MYSQL_HOST=localhost MYSQL_DATABASE=orz_test MYSQL_USER=root MYSQL_PASSWORD=
