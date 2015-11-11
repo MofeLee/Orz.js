@@ -1,1 +1,1 @@
-module.exports = require(__dirname + '/libs/orz.js');
+module.exports = require('./libs/orz');
