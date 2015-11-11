@@ -1,5 +1,6 @@
 #!/bin/bash
 ROOT=`dirname $0`
+echo $ROOT
 $ROOT/node_modules/.bin/istanbul cover \
 $ROOT/node_modules/.bin/_mocha -- \
                           --timeout 10000 \
