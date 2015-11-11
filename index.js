@@ -1,1 +1,1 @@
-module.exports = require('./libs/orz');
+module.exports = exports = require('./libs/orz');
