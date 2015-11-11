@@ -1,4 +1,5 @@
 const co = require('co');
+const debug = require('debug')('test:model');
 const squel = require('squel');
 describe('Model', function() {
 
@@ -35,7 +36,7 @@ describe('Model', function() {
                         {name: 'petter'}
                     ]).toString();
 
-                console.log(sql);
+                debug('SQL: ' + sql);
 
                 yield model.query(sql);
             } catch (err) {
@@ -79,7 +80,7 @@ describe('Model', function() {
             model.findAll()
                 .then(function(data) {
                     // console.log(data);
-                    
+
                     expect(data.rows.length).to.be.equal(3);
                     expect(data.rows[2]).to.deep.equal({ id: 3, name: 'petter' });
                     done();
