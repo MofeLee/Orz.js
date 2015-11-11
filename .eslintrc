@@ -24,12 +24,10 @@
         "browser": true
     },
     "extends": "eslint:recommended",
-    "plugins": [
-        "react"
-    ],
     "ecmaFeatures": {
     },
     "globals": {
+        "Orz": false
         "$": false,
         "app": false,
         "describe": false,

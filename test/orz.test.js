@@ -23,7 +23,10 @@ describe('Orz', function() {
 
     describe('Orz#define', function() {
         it('should return a model', function(){
+            var model = orz.define('test_table', {});
 
+            expect(model.name).to.be.equal('test_table');
+            expect(model.attributes).to.deep.equal({});
         })
     });
 })

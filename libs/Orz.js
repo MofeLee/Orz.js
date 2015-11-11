@@ -17,27 +17,27 @@ function Orz(database, username, password, options) {
     });
 
     this.pool = pool;
+    this.db = {};
 }
 
-Orz.prototype.query = function(sql){
-    var self = this;
-    return new Promise(function(resolve, reject){
-        debug(sql);
-        self.pool.query(sql, function(err, rows, fields){
-            if(err) reject(err);
-            resolve({
-                rows: rows,
-                fields: fields
-            });
-        })
-    });
-}
+Orz.prototype.define = function(modelName, attributes) {
+    var model = new Model(this.pool, modelName, attributes);
 
-Orz.prototype.define = function(modelName, attributes){
-    var model = new Model.call(this, modelName, attributes);
-
+    this.db[modelName] = model;
     return model;
 }
 
+var orz = new Orz('orz_test', 'root', '', {
+    host: 'localhost'
+});
+
+var tableName = 'test_table';
+
+var model = orz.define(tableName, {});
+
+model.findAll()
+    .then(function(data){
+        console.log(data);
+    });
 
 module.exports = Orz;
