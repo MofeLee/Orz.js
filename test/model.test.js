@@ -6,7 +6,7 @@ describe('Model', function() {
     var orz;
     var model;
     before(function(done) {
-        orz = new Orz('orz_test', 'root', '', {
+        orz = new Orz('myapp_test', 'travis', '', {
             host: 'localhost'
         });
 

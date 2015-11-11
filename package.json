@@ -4,7 +4,7 @@
   "description": "Orz - Object Relation Zipping",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "test": "./run-tests"
   },
   "repository": {
     "type": "git",
