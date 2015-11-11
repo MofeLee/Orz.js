@@ -1,3 +1,4 @@
+'use strict';
 const debug = require('debug')('model');
 const squel = require('squel');
 
@@ -17,19 +18,18 @@ Model.prototype.query = function(sql) {
                 rows: rows,
                 fields: fields
             });
-        })
+        });
     });
 
-}
+};
 
 Model.prototype.findAll = function(options) {
     var expr = squel.select()
         .from(this.name);
 
     var sql = expr.toString();
-    debug(sql);
-
+    
     return this.query(sql);
-}
+};
 
 module.exports = Model;
