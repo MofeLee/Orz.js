@@ -1,0 +1,22 @@
+{
+  "name": "orz",
+  "version": "0.0.1",
+  "description": "Orz - Object Relation Zipping",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.1caifu.org:liyong/Orz.git"
+  },
+  "author": "Mofe Lee <mofe@me.com>",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "lodash": "^3.10.1",
+    "mysql": "^2.9.0",
+    "squel": "^4.2.0",
+    "thunkify": "^2.1.2"
+  }
+}
