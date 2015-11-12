@@ -21,11 +21,10 @@ describe('Model', function() {
 
     var orz;
     var model;
+    var tableName = 'test_table';
+
     before(function(done) {
         orz = new Orz(config);
-
-        var tableName = 'test_table';
-
         model = orz.define(tableName, {});
 
         co(function*() {
@@ -41,6 +40,7 @@ describe('Model', function() {
                         table.timestamps();
                     });
 
+                // 插入测试字段
                 yield model.knex(tableName)
                     .insert([{
                         name: 'tony'
@@ -55,12 +55,33 @@ describe('Model', function() {
 
             return done();
         });
+    });
 
+    after(function(done) {
+        co(function*() {
+            try {
+                yield model.knex.schema.dropTableIfExists(tableName);
+            } catch (err) {
+                throw new Error(err);
+            }
 
+            return done();
+        });
+    });
+
+    describe('Model#query', function() {
+        it('should get correct results', function(done) {
+            model.query('SELECT 1+1 AS solution')
+                .then(function(data) {
+                    
+                    expect(data[0][0].solution).to.be.equal(2);
+                    done();
+                });
+        });
     });
 
     describe('Model#findAll', function() {
-        it('should 获取到结果', function(done) {
+        it('should get correct results', function(done) {
             model.findAll()
                 .then(function(data) {
                     // console.log('data: ', data);
@@ -72,5 +93,18 @@ describe('Model', function() {
                     done();
                 });
         });
+    });
+
+    describe('Model#findById', function() {
+        it('should get correct results', function() {
+            model.findById(2)
+                .then(function(data) {
+                    console.log(data);
+                    expect(data.length).to.be.equal(1);
+                    expect(data[0].id).to.be.equal(2);
+                    expect(data[0].name).to.be.equal('kitty');
+                });
+        });
+
     });
 });
