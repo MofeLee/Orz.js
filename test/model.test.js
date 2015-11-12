@@ -1,14 +1,28 @@
 const co = require('co');
-const debug = require('debug')('test:model');
-const squel = require('squel');
+// const debug = require('debug')('test:model');
+// const squel = require('squel');
+
+var config = {
+    client: 'mysql',
+    connection: {
+        host: '127.0.0.1',
+        user: 'root',
+        password: '',
+        database: 'orz_test'
+    },
+    pool: {
+        min: 0,
+        max: 10
+    }
+    // debug: true
+};
+
 describe('Model', function() {
 
     var orz;
     var model;
     before(function(done) {
-        orz = new Orz('orz_test', 'root', '', {
-            host: 'localhost'
-        });
+        orz = new Orz(config);
 
         var tableName = 'test_table';
 
@@ -17,28 +31,24 @@ describe('Model', function() {
         co(function*() {
             try {
                 // 删除以前遗留的测试表
-                yield model.query('drop table if exists ' + tableName);
+                yield model.knex.schema.dropTableIfExists(tableName);
 
                 // 创建测试表
-                yield model.query([
-                    'create table ', tableName, '(',
-                    '  id     bigint not null auto_increment,',
-                    '  name   varchar(50),',
-                    '  primary key (id)',
-                    ')'
-                ].join(''));
+                yield model.knex.schema
+                    .createTableIfNotExists(tableName, function(table) {
+                        table.increments();
+                        table.string('name');
+                        table.timestamps();
+                    });
 
-                var sql = squel.insert()
-                    .into(tableName)
-                    .setFieldsRows([
-                        {name: 'tony'},
-                        {name: 'kitty'},
-                        {name: 'petter'}
-                    ]).toString();
-
-                debug('SQL: ' + sql);
-
-                yield model.query(sql);
+                yield model.knex(tableName)
+                    .insert([{
+                        name: 'tony'
+                    }, {
+                        name: 'kitty'
+                    }, {
+                        name: 'petter'
+                    }]);
             } catch (err) {
                 throw new Error(err);
             }
@@ -49,40 +59,16 @@ describe('Model', function() {
 
     });
 
-    describe('Model#query', function() {
-        context('when SQL语句正确时', function() {
-            it('should 获取到结果', function(done) {
-                model.query('SELECT 1+1 AS solution')
-                    .then(function(data) {
-                        expect(data.rows[0].solution)
-                            .to.be.equal(2);
-                        done();
-                    });
-            });
-        });
-
-        context('when SQL错误时', function() {
-            it('should 返回一个err', function(done) {
-                model.query('I AM wrong')
-                    .catch(function(err) {
-                        expect(err).to.not.be.undefined;
-                        done();
-                    });
-
-            });
-        });
-
-    });
-
-
     describe('Model#findAll', function() {
         it('should 获取到结果', function(done) {
             model.findAll()
                 .then(function(data) {
-                    // console.log(data);
+                    // console.log('data: ', data);
 
-                    expect(data.rows.length).to.be.equal(3);
-                    expect(data.rows[2]).to.deep.equal({ id: 3, name: 'petter' });
+                    expect(data.length).to.be.equal(3);
+
+                    expect(data[2]).to.have.property('id', 3);
+                    expect(data[2]).to.have.property('name', 'petter');
                     done();
                 });
         });
