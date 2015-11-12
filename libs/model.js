@@ -1,6 +1,5 @@
 'use strict';
 const debug = require('debug')('model');
-const squel = require('squel');
 
 function Model(knex, name, attributes) {
     this.knex = knex;
