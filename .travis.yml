@@ -26,6 +26,7 @@ script:
   - "npm test"
 
 after_script:
+  - "npm run coveralls"
   # - "test -e ./coverage/lcov.info && npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
 
 env:
