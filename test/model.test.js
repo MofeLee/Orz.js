@@ -73,7 +73,7 @@ describe('Model', function() {
         it('should get correct results', function(done) {
             model.query('SELECT 1+1 AS solution')
                 .then(function(data) {
-                    
+
                     expect(data[0][0].solution).to.be.equal(2);
                     done();
                 });
@@ -99,10 +99,21 @@ describe('Model', function() {
         it('should get correct results', function() {
             model.findById(2)
                 .then(function(data) {
-                    console.log(data);
+                    // console.log(data);
                     expect(data.length).to.be.equal(1);
                     expect(data[0].id).to.be.equal(2);
                     expect(data[0].name).to.be.equal('kitty');
+                });
+        });
+
+    });
+
+
+    describe('Model#count', function() {
+        it('should get correct results', function() {
+            model.count()
+                .then(function(data) {
+                    expect(data).to.be.equal(3);
                 });
         });
 
