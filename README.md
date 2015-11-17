@@ -3,4 +3,4 @@
 [![coverage](https://coveralls.io/repos/MofeLee/Orz.js/badge.svg?branch=master&amp;service=github)](https://coveralls.io/github/MofeLee/Orz.js)
 
 [![Dependencies status](https://david-dm.org/MofeLee/Orz.js.svg)](https://david-dm.org/MofeLee/Orz.js.svg)
-[![devDependencies status](https://david-dm.org/MofeLee/Orz.js.svg#info=devDependencies)](https://david-dm.org/MofeLee/Orz.js.svg#info=devDependencies&view=table)
+[![devDependencies status](https://david-dm.org/MofeLee/Orz.js/dev-status.svg)](https://david-dm.org/MofeLee/Orz.js.svg#info=devDependencies&view=table)
