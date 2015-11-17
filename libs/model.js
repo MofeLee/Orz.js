@@ -1,5 +1,6 @@
 'use strict';
 const co = require('co');
+const _ = require('lodash');
 
 function Model(knex, name, attributes) {
     this.knex = knex;
@@ -7,21 +8,37 @@ function Model(knex, name, attributes) {
     this.attributes = attributes;
 }
 
+var service = {
+    query: query,
+    findAll: findAll,
+    findById: findById,
+    create: create,
+    count: count
+};
 
-Model.prototype.query = function(sql) {
+_.assign(Model.prototype, service);
+
+
+function query(sql) {
     return this.knex.raw(sql);
-};
+}
 
-Model.prototype.findAll = function() {
+function findAll() {
     return this.knex(this.name);
-};
+}
 
-Model.prototype.findById = function(id) {
+function findById(id) {
     return this.knex(this.name)
         .where('id', id);
-};
+}
 
-Model.prototype.count = function() {
+function create(obj){
+    return this.knex(this.name)
+        .insert(obj);
+
+}
+
+function count() {
     var self = this;
     
     return co(function*(){
@@ -29,6 +46,6 @@ Model.prototype.count = function() {
                             .count('id as count');
         return data[0].count;
     });
-};
+}
 
 module.exports = Model;

@@ -23,7 +23,7 @@ describe('Model', function() {
     var model;
     var tableName = 'test_table';
 
-    before(function(done) {
+    beforeEach(function(done) {
         orz = new Orz(config);
         model = orz.define(tableName, {});
 
@@ -57,7 +57,7 @@ describe('Model', function() {
         });
     });
 
-    after(function(done) {
+    afterEach(function(done) {
         co(function*() {
             try {
                 yield model.knex.schema.dropTableIfExists(tableName);
@@ -96,24 +96,49 @@ describe('Model', function() {
     });
 
     describe('Model#findById', function() {
-        it('should get correct results', function() {
+        it('should get correct results', function(done) {
             model.findById(2)
                 .then(function(data) {
                     // console.log(data);
                     expect(data.length).to.be.equal(1);
                     expect(data[0].id).to.be.equal(2);
                     expect(data[0].name).to.be.equal('kitty');
+                    done();
                 });
         });
 
     });
 
+    describe('Model#create', function() {
+        it('should create a row', function(done) {
+            co(function*() {
+                var beforeData = yield model.findAll();
+                var obj = [{
+                    name: 'cody'
+                }];
+
+                var returnObj = yield model.create(obj);
+                var afterData = yield model.findAll();
+
+                expect(beforeData.length).to.be.equal(3);
+                expect(returnObj).to.deep.equal([4]);
+                expect(afterData.length).to.be.equal(4);
+
+            }).then(function() {
+                done();
+            }).catch(function(err){
+                done(new Error(err));
+            });
+        });
+
+    });
 
     describe('Model#count', function() {
-        it('should get correct results', function() {
+        it('should get correct results', function(done) {
             model.count()
                 .then(function(data) {
                     expect(data).to.be.equal(3);
+                    done();
                 });
         });
 
