@@ -126,6 +126,45 @@ describe('Model', function() {
 
             }).then(function() {
                 done();
+            }).catch(function(err) {
+                done(new Error(err));
+            });
+        });
+    });
+
+    describe('Model#updateById', function() {
+        it('should update a record', function(done) {
+            co(function*() {
+                var obj = {
+                    name: 'other name'
+                };
+                var effectRows = yield model.updateById(2, obj);
+                var afterData = yield model.findAll();
+
+                expect(effectRows).to.be.equal(1);
+                expect(afterData.length).to.be.equal(3);
+                expect(afterData[1].name).to.be.equal(obj.name);
+
+            }).then(function() {
+                done();
+            }).catch(function(err) {
+                done(new Error(err));
+            });
+        });
+    });
+
+    describe('Model#destroyById', function(){
+        it('should delete a record', function(done){
+            co(function*(){
+
+                var beforeData = yield model.findAll();
+                var effectRows = yield model.destroyById(2);
+                var afterData = yield model.findAll();
+
+                expect(effectRows).to.be.equal(1);
+                expect(afterData.length).to.be.equal(beforeData.length - 1);
+            }).then(function(){
+                done();
             }).catch(function(err){
                 done(new Error(err));
             });

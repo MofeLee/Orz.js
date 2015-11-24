@@ -13,6 +13,8 @@ var service = {
     findAll: findAll,
     findById: findById,
     create: create,
+    updateById: updateById,
+    destroyById: destroyById,
     count: count
 };
 
@@ -32,18 +34,29 @@ function findById(id) {
         .where('id', id);
 }
 
-function create(obj){
+function create(obj) {
     return this.knex(this.name)
         .insert(obj);
+}
 
+function updateById(id, obj) {
+    return this.knex(this.name)
+        .where('id', id)
+        .update(obj);
+}
+
+function destroyById(id) {
+    return this.knex(this.name)
+        .where('id', id)
+        .del();
 }
 
 function count() {
     var self = this;
-    
-    return co(function*(){
+
+    return co(function*() {
         var data = yield self.knex(self.name)
-                            .count('id as count');
+            .count('id as count');
         return data[0].count;
     });
 }
