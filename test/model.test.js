@@ -73,7 +73,6 @@ describe('Model', function() {
         it('should get correct results', function(done) {
             model.query('SELECT 1+1 AS solution')
                 .then(function(data) {
-
                     expect(data[0][0].solution).to.be.equal(2);
                     done();
                 });
@@ -84,7 +83,6 @@ describe('Model', function() {
         it('should get correct results', function(done) {
             model.findAll()
                 .then(function(data) {
-                    // console.log('data: ', data);
 
                     expect(data.length).to.be.equal(3);
 
@@ -99,7 +97,6 @@ describe('Model', function() {
         it('should get correct results', function(done) {
             model.findById(2)
                 .then(function(data) {
-                    // console.log(data);
                     expect(data.length).to.be.equal(1);
                     expect(data[0].id).to.be.equal(2);
                     expect(data[0].name).to.be.equal('kitty');
